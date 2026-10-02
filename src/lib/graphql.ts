@@ -321,9 +321,10 @@ async function executeGraphQL<Result, Variables>(
 		next: { revalidate },
 	};
 
-	const fetchResult = await requestQueue.enqueue(() =>
-		fetchWithRetry(input, withAuth, operationName, variablesForLog),
-	);
+	// Session requests may wait for runtime cookies during partial prerendering.
+	// They must not occupy the public-data queue used by "use cache" functions.
+	const fetchRequest = () => fetchWithRetry(input, withAuth, operationName, variablesForLog);
+	const fetchResult = await (withAuth ? fetchRequest() : requestQueue.enqueue(fetchRequest));
 
 	if (!fetchResult.ok) {
 		return fetchResult;
