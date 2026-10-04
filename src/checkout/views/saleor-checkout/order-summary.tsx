@@ -149,7 +149,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ checkout, order, editable 
 	const remainingCount = Math.max(0, lines.length - 2);
 
 	return (
-		<article>
+		<article data-impact-id="checkout.order-summary">
 			{/* Mobile Collapsible Header - Only visible on mobile */}
 			<button
 				onClick={() => setIsExpanded(!isExpanded)}
@@ -288,6 +288,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ checkout, order, editable 
 								<div className="relative flex-1">
 									<Tag className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 									<Input
+										data-impact-id="checkout.discount.code-input"
 										placeholder="Discount code"
 										value={promoCode}
 										onChange={(e) => setPromoCode(e.target.value)}
@@ -296,6 +297,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ checkout, order, editable 
 									/>
 								</div>
 								<Button
+									data-impact-id="checkout.discount.apply"
 									type="submit"
 									variant="outline-solid"
 									disabled={!promoCode || promoApplied}
@@ -305,7 +307,12 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ checkout, order, editable 
 								</Button>
 							</form>
 							{promoApplied && (
-								<p className="mt-2 text-sm font-medium text-green-600">SALEOR10 - 10% discount applied</p>
+								<p
+									data-impact-id="checkout.discount.applied-message"
+									className="mt-2 text-sm font-medium text-green-600"
+								>
+									SALEOR10 - 10% discount applied
+								</p>
 							)}
 						</section>
 					)}
@@ -332,7 +339,7 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ checkout, order, editable 
 							{discount > 0 && (
 								<div className="flex justify-between text-green-600">
 									<dt>Discount</dt>
-									<dd>-{formatMoney(discount)}</dd>
+									<dd data-impact-id="checkout.discount.amount">-{formatMoney(discount)}</dd>
 								</div>
 							)}
 						</dl>
@@ -343,7 +350,11 @@ export const OrderSummary: FC<OrderSummaryProps> = ({ checkout, order, editable 
 								<span className="text-base font-semibold">Total</span>
 								{tax > 0 && <span className="text-xs text-muted-foreground">Including VAT</span>}
 							</div>
-							<data value={total} className="text-xl font-semibold tabular-nums">
+							<data
+								data-impact-id="checkout.order-total"
+								value={total}
+								className="text-xl font-semibold tabular-nums"
+							>
 								{formatMoney(total)}
 							</data>
 						</div>
