@@ -18,7 +18,7 @@ export function SearchResults({ products, channel }: SearchResultsProps) {
 	}
 
 	return (
-		<ul role="list" className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+		<ul role="list" aria-label="Search results" className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{products.map((product, index) => (
 				<li key={product.id}>
 					<SearchResultCard product={product} channel={channel} priority={index < 2} />
