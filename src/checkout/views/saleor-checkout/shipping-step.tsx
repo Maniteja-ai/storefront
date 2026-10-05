@@ -105,7 +105,11 @@ export const ShippingStep: FC<ShippingStepProps> = ({ checkout: initialCheckout,
 			<section className="space-y-4">
 				<h2 className="text-lg font-semibold">Shipping method</h2>
 
-				{error && <p className="text-sm text-destructive">{error}</p>}
+				{error && (
+					<p role="alert" className="text-sm text-destructive">
+						{error}
+					</p>
+				)}
 
 				{fetching ? (
 					<div className="flex items-center gap-3 rounded-lg border border-border p-4">
