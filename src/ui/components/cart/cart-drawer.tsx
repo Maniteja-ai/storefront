@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, Truck, RotateCcw } from "lucide-react";
@@ -114,6 +114,7 @@ interface CartDrawerProps {
 export function CartDrawer({ checkoutId, lines, totalPrice, channel }: CartDrawerProps) {
 	const { isOpen, closeCart } = useCart();
 	const [isPending, startTransition] = useTransition();
+	const [actionError, setActionError] = useState<string | null>(null);
 
 	const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
 	const subtotal = totalPrice?.gross.amount ?? 0;
@@ -121,15 +122,19 @@ export function CartDrawer({ checkoutId, lines, totalPrice, channel }: CartDrawe
 
 	const handleRemove = (lineId: string) => {
 		if (!checkoutId) return;
-		startTransition(() => {
-			deleteCartLine(checkoutId, lineId);
+		setActionError(null);
+		startTransition(async () => {
+			const result = await deleteCartLine(checkoutId, lineId);
+			if (!result.success) setActionError(result.message);
 		});
 	};
 
 	const handleUpdateQuantity = (lineId: string, newQuantity: number) => {
 		if (!checkoutId || newQuantity < 1) return;
-		startTransition(() => {
-			updateCartLineQuantity(checkoutId, lineId, newQuantity);
+		setActionError(null);
+		startTransition(async () => {
+			const result = await updateCartLineQuantity(checkoutId, lineId, newQuantity);
+			if (!result.success) setActionError(result.message);
 		});
 	};
 
@@ -177,6 +182,11 @@ export function CartDrawer({ checkoutId, lines, totalPrice, channel }: CartDrawe
 
 				{/* Cart Items */}
 				<div className="flex-1 overflow-y-auto">
+					{actionError && (
+						<p role="alert" className="mx-6 mt-4 rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+							{actionError}
+						</p>
+					)}
 					{lines.length === 0 ? (
 						<div className="flex h-full flex-col items-center justify-center px-6 text-center">
 							<div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
