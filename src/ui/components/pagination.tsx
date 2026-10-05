@@ -29,7 +29,7 @@ export function Pagination({
 	const prevPageUrl = `${pathname}?${prevSearchParams.toString()}`;
 
 	return (
-		<nav aria-label="Search results pages" className="flex items-center justify-center gap-x-4 border-neutral-200 px-4 pt-12">
+		<nav aria-label="Pagination" className="flex items-center justify-center gap-x-4 border-neutral-200 px-4 pt-12">
 			{pageInfo.hasPreviousPage ? (
 				<Link href={prevPageUrl} className="rounded bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800">
 					Previous
