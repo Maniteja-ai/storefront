@@ -99,25 +99,30 @@ export function VariantNameSelector({
 								disabled={isOutOfStock}
 								aria-disabled={isOutOfStock}
 								className={cn(
-									"h-12 min-w-[4.5rem] rounded-lg border px-4 text-sm font-medium transition-all",
+									"flex h-auto min-h-12 min-w-[4.5rem] flex-col items-start justify-center gap-0.5 rounded-lg border px-4 py-2 text-sm font-medium transition-all",
 									"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
 									isSelected
 										? "border-foreground bg-foreground text-background"
 										: "border-border bg-background text-foreground hover:border-foreground",
-									isOutOfStock && "cursor-not-allowed text-muted-foreground line-through opacity-60",
+									isOutOfStock && "cursor-not-allowed text-muted-foreground opacity-60",
 								)}
 								title={isOutOfStock ? `${variant.name} - Out of stock` : undefined}
 								aria-label={accessibleParts.join(", ")}
 								aria-pressed={isSelected}
 							>
 								<span className="flex items-center gap-2">
-									{variant.name}
+									<span className={cn(isOutOfStock && "line-through")}>{variant.name}</span>
 									{showPrices && price && (
 										<span className={cn("text-xs", isSelected ? "opacity-80" : "text-muted-foreground")}>
 											{formatMoney(price.amount, price.currency)}
 										</span>
 									)}
 								</span>
+								{isOutOfStock && (
+									<span className="text-[10px] font-semibold uppercase leading-none tracking-wide text-muted-foreground">
+										Out of stock
+									</span>
+								)}
 							</button>
 							{discountPercent && !isOutOfStock && (
 								<span
