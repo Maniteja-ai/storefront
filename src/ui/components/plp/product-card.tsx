@@ -1,6 +1,5 @@
 "use client";
 
-import type React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Plus } from "lucide-react";
@@ -42,9 +41,7 @@ interface ProductCardProps {
 export function ProductCard({ product, priority = false }: ProductCardProps) {
 	const canQuickAdd = !product.hasVariants && product.onQuickAdd;
 
-	const handleQuickAdd = (e: React.MouseEvent) => {
-		e.preventDefault();
-		e.stopPropagation();
+	const handleQuickAdd = () => {
 		product.onQuickAdd?.(product.id);
 	};
 
@@ -57,9 +54,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
 	return (
 		<article className="group">
-			<Link href={product.href} className="block">
-				{/* Image Container */}
-				<div className="relative mb-4 aspect-[3/4] overflow-hidden rounded-xl bg-secondary">
+			<div className="relative">
+				<Link href={product.href} className="mb-4 block">
+					{/* Image Container */}
+					<div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-secondary">
 					{/* Primary Image */}
 					<Image
 						src={product.image}
@@ -94,17 +92,20 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 						</Badge>
 					)}
 
-					{/* Quick Add Overlay - desktop only to avoid double-tap on touch */}
-					{canQuickAdd && (
-						<div className="absolute bottom-0 left-0 right-0 hidden translate-y-2 p-3 opacity-0 transition-all duration-300 md:block md:group-hover:translate-y-0 md:group-hover:opacity-100">
-							<Button className="w-full" size="sm" onClick={handleQuickAdd} type="button">
-								<Plus className="mr-1.5 h-4 w-4" />
-								Quick Add
-							</Button>
-						</div>
-					)}
-				</div>
+					</div>
+				</Link>
+				{/* Quick Add is a separate action, outside the product link. */}
+				{canQuickAdd && (
+					<div className="absolute bottom-4 left-0 right-0 z-10 hidden translate-y-2 p-3 opacity-0 transition-all duration-300 md:block md:group-hover:translate-y-0 md:group-hover:opacity-100">
+						<Button className="w-full" size="sm" onClick={handleQuickAdd} type="button">
+							<Plus className="mr-1.5 h-4 w-4" />
+							Quick Add
+						</Button>
+					</div>
+				)}
+			</div>
 
+			<Link href={product.href} className="block">
 				{/* Product Info */}
 				<div className="space-y-1.5">
 					{product.brand && <p className="text-xs tracking-wide text-muted-foreground">{product.brand}</p>}
