@@ -131,11 +131,15 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
 					{/* Price */}
 					<div className="flex items-center gap-2 pt-0.5">
-						<span className="font-semibold">{formatPrice(product.price, product.currency)}</span>
-						{product.compareAtPrice && (
-							<span className="text-sm text-muted-foreground line-through">
+						<span className="font-semibold">
+							<span className="sr-only">Current price: </span>
+							{formatPrice(product.price, product.currency)}
+						</span>
+						{product.compareAtPrice != null && product.compareAtPrice > product.price && (
+							<del className="text-sm text-muted-foreground">
+								<span className="sr-only">Original price: </span>
 								{formatPrice(product.compareAtPrice, product.currency)}
-							</span>
+							</del>
 						)}
 					</div>
 				</div>
