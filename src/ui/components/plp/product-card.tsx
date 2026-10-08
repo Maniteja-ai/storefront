@@ -118,13 +118,20 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 							{product.colors.slice(0, 4).map((color) => (
 								<span
 									key={color.name}
+									role="img"
+									aria-label={color.name}
 									className="h-4 w-4 rounded-full border border-border"
 									style={{ backgroundColor: color.hex }}
 									title={color.name}
 								/>
 							))}
 							{product.colors.length > 4 && (
-								<span className="ml-0.5 text-xs text-muted-foreground">+{product.colors.length - 4}</span>
+								<span
+									className="ml-0.5 text-xs text-muted-foreground"
+									aria-label={`${product.colors.length - 4} more colors`}
+								>
+									+{product.colors.length - 4}
+								</span>
 							)}
 						</div>
 					)}
